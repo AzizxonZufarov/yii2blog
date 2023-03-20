@@ -1,0 +1,21 @@
+<?php
+
+namespace app\controllers;
+
+use app\models\Users;
+use Yii;
+use yii\filters\AccessControl;
+use yii\web\Controller;
+use yii\web\Response;
+use yii\filters\VerbFilter;
+use app\models\LoginForm;
+use app\models\ContactForm;
+
+class UsersController extends Controller
+{
+    public function actionUsers()
+    {
+        $users= Users::find()->all();
+        return $this->render('users',compact('users'));
+    }
+}

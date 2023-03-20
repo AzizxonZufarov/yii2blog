@@ -1,0 +1,34 @@
+    public function actionEditcab($id)
+    {
+        $cats = Categories::find()->all();
+        $friends = Friends::find()->all();
+        if (Yii::$app->request->post()) {
+            $name = $_POST['name'];
+            $login = $_POST['login'];
+            $password = $_POST['password'];
+            $email = $_POST['email'];
+            $img = $_FILES['img']['name'];
+
+            $users = Users::findOne($id);
+            $users->name = $name;
+            $users->login = $login;
+            $users->password = $password;
+            $users->email = $email;
+            if($_FILES['img']['name'] != NULL){
+                $users = Users::findOne($id);
+                $old = $users->img;
+                unlink("regupl/".$old);
+                move_uploaded_file($_FILES['img']['tmp_name'],"regupl/" . $img);
+                $users->img = $img;
+            }else{
+                $users = Users::findOne($id);
+                $old = $users->img;
+                $users->img=$old;
+
+            }
+            $users->save();
+            return $this->redirect('?r=site/cab');
+        }
+        $users = Users::findOne($id);
+        return $this->render('editcab', compact('users', 'cats', 'friends'));
+    }
